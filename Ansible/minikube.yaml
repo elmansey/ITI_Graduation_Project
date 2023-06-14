@@ -1,0 +1,4 @@
+- name: Install Minikube and set up local Kubernetes
+  hosts: minikube
+  roles:
+    - minikube

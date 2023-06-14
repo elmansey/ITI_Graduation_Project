@@ -1,0 +1,24 @@
+1.1. Repository:
+
+- https://github.com/mahmoud254/jenkins_nodejs_example.git
+- Branch: k8s_task
+
+
+
+1.2. Task:
+
+1- Install local K8s instance using Minikub (with Ansible).
+2- K8s instance will have two Namespaces: tools and dev (installed using Terraform)
+3- tools namespace will have pod for Jenkins and nexus(installed using Terraform)
+4- dev namespace will run two pods: one for nodejs application and another for MySQL DB
+
+5- Create a Jenkins pipeline job to do the following:
+    o Checkout code from https://github.com/mahmoud254/jenkins_nodejs_example.git
+    a- Build nodejs app usng dockerfile
+    b- Create a Docker image
+    c- Upload Docker image to nexus
+
+6- Create another Jenkins pipeline job that run the Docker container on the requested environment
+   from nexus on minikube.
+   
+7- Configurations of micro-services should either be handled using using secrets in K8s.

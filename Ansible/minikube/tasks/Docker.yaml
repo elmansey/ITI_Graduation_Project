@@ -1,0 +1,117 @@
+- name: Install Docker as a prerequisite for minikube
+  apt:
+    update_cache: yes
+
+- name: install dependances  packages 
+  apt:
+    name: ca-certificates,curl,gnupg,lsb-release,python3-pip
+    state: present
+
+- name: Download Docker GPG key
+  get_url:
+    url: "{{DockerGPGLink}}"
+    dest: /tmp/docker.gpg
+    
+#
+
+- name: find if docker-archive-keyring.gpg if exist 
+  stat:
+    path:  /usr/share/keyrings/docker-archive-keyring.gpg 
+  register: key_exists
+
+- name: Import Docker GPG key
+  shell: cat /tmp/docker.gpg | sudo gpg  --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg 
+  when: key_exists.stat.exists == false
+
+- name: Get architecture
+  shell: dpkg --print-architecture
+  register: dpkg_architecture
+
+- name: Add Docker repository to apt sources
+  lineinfile:
+    path: /etc/apt/sources.list.d/docker.list
+    line: 'deb [arch={{ dpkg_architecture.stdout }} signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable'
+    create: true
+
+- name: update apt 
+  apt:
+    update_cache: yes
+
+- name: install docker packages 
+  apt:
+    name: docker-ce,docker-ce-cli,containerd.io,docker-compose-plugin
+    state: present
+
+
+
+- name: Recursively change ownership of a directory
+  file:
+    path: /home/ubuntu/.docker
+    state: directory
+    recurse: yes
+    owner: ubuntu
+    group: ubuntu
+    mode: '0777'
+
+
+- name: Recursively change ownership of a /var/run/docker.sock file
+  file:
+    path: /var/run/docker.sock
+    state: file
+    owner: ubuntu
+    group: ubuntu
+    mode: '0777'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# - name: Install necessary packages
+#   apt:
+#     # name: ['docker.io']
+#     # state: present
+#     update_cache: yes
+
+# # - name: Download and install kubectl
+# #   shell: curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+
+# # - name: Download and install Minikube
+# #   shell: curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && sudo install minikube-linux-amd64 /usr/local/bin/minikube
+
+# # - name: Start Minikube cluster
+# #   shell: minikube start --driver=docker
+
+# # - name: Set up Kubernetes configuration
+# #   shell: minikube update-context
+
+# # - name: Verify Minikube status
+# #   shell: minikube status
+
+# # - name: Print Minikube IP
+# #   shell: minikube ip
+# #   register: minikube_ip
+
+# # - debug:
+# #     var: minikube_ip.stdout
