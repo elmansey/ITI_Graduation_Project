@@ -1,1 +1,3 @@
 DockerGPGLink:  https://download.docker.com/linux/ubuntu/gpg
+K8sDownloadKey: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+K8sDownloadKeyDist: /usr/share/keyrings/kubernetes-archive-keyring.gpg

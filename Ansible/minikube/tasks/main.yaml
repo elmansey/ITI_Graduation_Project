@@ -1,2 +1,5 @@
 - name: install docker in machine 
   include_tasks: Docker.yaml
+
+- name: install kubectl and minikube  in machine 
+  include_tasks: minikube.yaml
