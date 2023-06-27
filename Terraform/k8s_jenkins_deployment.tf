@@ -55,8 +55,9 @@ resource "kubernetes_deployment" "jenkins" {
         }
       }
       spec {
+        service_account_name = kubernetes_service_account.jenkins-identity.metadata.0.name
         container {
-          image = "jenkins/jenkins:lts"
+          image = "elnabawy/jenkins-docker-kubectl"
           name  = "jenkins-container"
 
           port {
