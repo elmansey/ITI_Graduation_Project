@@ -4,9 +4,14 @@ resource "kubernetes_cluster_role" "jenkins-Cluster-Role" {
   }
 
   rule {
+    api_groups = ["apps", ""]
+    resources  = ["deployments", "services"]
+    verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
+  }
+  rule {
     api_groups = [""]
-    resources  = ["*"]
-    verbs      = ["*"]
+    resources  = ["services","secrets","configmaps"]
+    verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
 }
 

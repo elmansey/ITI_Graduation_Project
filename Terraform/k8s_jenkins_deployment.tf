@@ -40,11 +40,21 @@ resource "kubernetes_deployment" "jenkins" {
             mount_path = "/var/run/docker.sock"
             name = "docker-deamon"
           }
+          volume_mount {
+            name = "jenkins-home"
+            mount_path = "/var/jenkins_home"
+          }
         }
         volume {
           name = "docker-deamon"
           host_path {
             path = "/var/run/docker.sock"
+          }
+        }
+        volume {
+          name = "jenkins-home"
+          persistent_volume_claim {
+            claim_name =  kubernetes_persistent_volume_claim.jenkins_pvc.metadata.0.name
           }
         }
       }
