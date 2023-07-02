@@ -50,9 +50,4 @@
     cmd: minikube status
   become: false
   
-- name: Print Minikube IP
-  command: minikube ip
-  register: minikube_ip
 
-- debug:
-    var: minikube_ip.stdout
